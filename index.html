@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>▶</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;            /* чёрный фон */
+  }
+
+  /* Кнопка = твоя картинка в родных пикселях, по центру */
+  #btn {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Размер = родной размер картинки. Только защита от переполнения: */
+    max-width: 100vw;
+    max-height: 100vh;
+    cursor: pointer;
+    z-index: 10;
+    user-select: none;
+    -webkit-user-drag: none;
+    display: block;
+  }
+  #btn.hidden { display: none; }
+
+  /* Гифка — на весь экран, изначально скрыта */
+  #bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;           /* заполняет весь экран (края могут обрезаться) */
+    z-index: 1;
+    pointer-events: none;
+    display: none;
+  }
+  #bg.show { display: block; }
+</style>
+</head>
+<body>
+
+  <img id="btn" src="button.png" alt="Enter">
+  <img id="bg" src="bg.gif" alt="">
+  <audio id="song" src="song.mp3" preload="auto" loop></audio>
+
+  <script>
+    const btn  = document.getElementById('btn');
+    const bg   = document.getElementById('bg');
+    const song = document.getElementById('song');
+
+    btn.addEventListener('click', async () => {
+      // 1. Убираем кнопку-картинку
+      btn.classList.add('hidden');
+
+      // 2. Показываем гифку (гифка сама крутится по кругу)
+      bg.classList.add('show');
+
+      // 3. Музыка на 100% и сразу играет
+      song.volume = 1;
+      try {
+        await song.play();
+      } catch (e) {
+        console.warn('Не удалось воспроизвести:', e);
+      }
+
+      // 4. Полный экран
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
