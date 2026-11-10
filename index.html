@@ -3,22 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>▶</title>
+<title>ПОДПИШИСЬ НА МОЙ КАНАЛ ПЖ</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html, body {
     width: 100%; height: 100%;
     overflow: hidden;
-    background: #111;
+    background: #000;
   }
-
   #btn {
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-
     max-width: 100vw;
     max-height: 100vh;
     cursor: pointer;
@@ -28,8 +24,6 @@
     display: block;
   }
   #btn.hidden { display: none; }
-
-
   #bg {
     position: fixed;
     inset: 0;
@@ -45,9 +39,9 @@
 </head>
 <body>
 
-  <img id="btn" src="button.png" alt="Enter">
-  <img id="bg" src="bg.gif" alt="">
-  <audio id="song" src="song.mp3" preload="auto" loop></audio>
+  <img id="btn" src="ne-smotri/button.png" alt="Enter">
+  <video id="bg" src="ne-smotri/bg.mp4" muted loop playsinline preload="auto"></video>
+  <audio id="song" src="ne-smotri/song.mp3" preload="auto" loop></audio>
 
   <script>
     const btn  = document.getElementById('btn');
@@ -55,25 +49,15 @@
     const song = document.getElementById('song');
 
     btn.addEventListener('click', async () => {
-
       btn.classList.add('hidden');
-
-
       bg.classList.add('show');
-
-
+      bg.muted = true;
+      try { await bg.play(); } catch (e) {}
       song.volume = 1;
-      try {
-        await song.play();
-      } catch (e) {
-        console.warn('Не удалось воспроизвести:', e);
-      }
-
-
-      try {
-        await document.documentElement.requestFullscreen();
-      } catch (e) {}
+      try { await song.play(); } catch (e) {}
+      try { await document.documentElement.requestFullscreen(); } catch (e) {}
     });
   </script>
+
 </body>
 </html>
